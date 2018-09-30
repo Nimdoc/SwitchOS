@@ -4,33 +4,36 @@
 [bits 16]
 [org 0x7C00]
 
-mov	[BOOT_DRIVE], dl	; Put bootdrive into variable
+mov	bp, 0x9000	; Setup the stack
+mov	sp, bp
 
-mov 	bp, 0x8000		; Set the base pointer out of the way
-mov	sp, bp			; Move stack pointer to base pointer
-
-mov	bx, 0x9000		; Load 5 sectors to 0x0000(ES):0x9000(BX)
-mov	dh, 1			; from the boot drive
-mov 	dl, [BOOT_DRIVE]
-call disk_load16
-
-mov	bx, 0x9000		; Print whatever is at that address
+mov	bx,	REAL_MODE_MSG
 call	print16
 call	print16_nl
 
-loop:			; Forever do an infinite loop
-	jmp loop
+call switch_to_pm	; Note: Won't return from here.
+
+jmp $		; Loop forever
 
 %include	"print16.asm"
 %include	"disk16.asm"
+%include	"print.asm"
+%include	"gdt.asm"
+%include	"switch_pm.asm"
+
+BEGIN_PM:
+
+mov	ebx, PROT_MODE_MSG
+call	print
+
+jmp	$
 
 ; Variables
 BOOT_DRIVE:	db 0
 
+REAL_MODE_MSG:	db "SWITCH-OS 16 BIT REAL MODE", 0
+PROT_MODE_MSG:	db "SWITCH-OS 32 BIT PROTECTED MODE", 0
+
 times 	510-($-$$) db 0
 dw 	0xAA55
 
-message:	db "Hello buddy.", 0
-times 500 db 0
-
-times 14*256 dw 0xdada

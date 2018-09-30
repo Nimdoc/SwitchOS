@@ -9,7 +9,7 @@ switch_to_pm:
 	or	eax, 0x1	; register to 1 to switch to pm
 	mov	cr0, eax
 
-	jmp	CODE_SEG::init_pm
+	jmp	CODE_SEG:init_pm
 
 [bits 32]
 
