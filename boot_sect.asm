@@ -15,16 +15,16 @@ call switch_to_pm	; Note: Won't return from here.
 
 jmp $		; Loop forever
 
-%include	"print16.asm"
-%include	"disk16.asm"
-%include	"print.asm"
-%include	"gdt.asm"
-%include	"switch_pm.asm"
+%include	"include/print16.asm"
+%include	"include/disk16.asm"
+%include	"include/print32.asm"
+%include	"include/gdt.asm"
+%include	"include/switch_pm.asm"
 
 BEGIN_PM:
 
 mov	ebx, PROT_MODE_MSG
-call	print
+call	print32
 
 jmp	$
 

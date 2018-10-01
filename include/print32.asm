@@ -2,7 +2,7 @@
 VIDEO_MEMORY	equ 0xB8000
 WHT_ON_BLK	equ 0x0F
 
-print:
+print32:
 	pusha
 	mov	edx, VIDEO_MEMORY	; Set edx to start of video memory
 	
