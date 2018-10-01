@@ -13,7 +13,7 @@ end_print16:
 	ret
 
 print16_nl:
-	pusha			; Save register values
+	pusha
 	mov	ah, 0x0E	; BIOS print code
 	mov	al, 0x0A	; Newline character
 	int	0x10		; Print

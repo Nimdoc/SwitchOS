@@ -1,0 +1,23 @@
+I'm writing an operating system to learn more about OS development
+
+So far I've been walking through these resources:
+
+http://www.cs.bham.ac.uk/%7Eexr/lectures/opsys/10_11/lectures/os-dev.pdf
+https://github.com/cfenollosa/os-tutorial
+
+Compiling so far:
+
+gcc -m32 -ffreestanding -c kernel.c -o kernel.o
+gcc -m32 -ffreestanding -c include/port.c -o port.o
+gcc -m32 -ffreestanding -c include/screen.c -o screen.o
+
+nasm boot_sect.asm -f bin -o boot_sect.bin
+nasm include/kernel_entry.asm -f elf -o kernel_entry.o
+
+ld -m elf_i386 -s -o kernel.bin -Ttext 0x1000 kernel_entry.o kernel.o port.o screen.o --oformat binary
+
+cat boot_sect.bin kernel.bin > os-image.bin
+
+TODO: 
+
+Write a Makefile
